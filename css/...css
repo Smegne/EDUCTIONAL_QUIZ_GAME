@@ -1,0 +1,119 @@
+body {
+    background-color: #f8f9fa;
+    padding-bottom: 60px; /* Space for bottom nav on mobile */
+}
+
+.quiz-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+.navbar{
+    background-color: #28a745;
+    box-shadow: 0px 4px 10px rgba(0.4, 0.5, 0.7, 0.9); 
+}
+
+
+
+
+.timer {
+    font-size: 1.2rem;
+    color: #dc3545;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+}
+
+.badge-item {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    display: none; /* Hidden by default */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #28a745;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0.9, 1);
+    padding: 10px 0;
+    color: #f8f9fa;
+    z-index: 1000;
+}
+.bottom-nav .nav-item  a{
+    color: #f8f9fa;
+}
+
+
+.bottom-nav .nav-item {
+    flex: 1;
+    text-align: center;
+    
+}
+
+.bottom-nav .nav-link {
+    color: #6e8efb;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.bottom-nav .nav-link i {
+    font-size: 1.5rem;
+}
+
+/* Media Query for Mobile/Tablet (2560x1600 or smaller) */
+@media (max-width: 2560px) and (max-height: 1600px) {
+    .quiz-card {
+        max-width: 100%;
+        margin: 10px;
+    }
+
+    .form-check {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    .bottom-nav {
+        display: flex; /* Show bottom nav on mobile/tablet */
+        justify-content: space-around;
+    }
+
+    .navbar {
+        display: flex; /* Keep top navbar visible */
+    }
+
+    .navbar-nav {
+        flex-direction: row;
+    }
+
+    .nav-link {
+        padding: 5px 10px;
+    }
+}
+
+/* Desktop (> 2560x1600) */
+@media (min-width: 2561px) {
+    .navbar {
+        display: flex; /* Top navbar always visible */
+    }
+
+    .bottom-nav {
+        display: none; /* Hide bottom nav on desktop */
+    }
+}
