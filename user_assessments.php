@@ -4,6 +4,7 @@ include 'config/db.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] != 1) {
     http_response_code(403);
+    echo json_encode(['error' => 'Unauthorized']);
     exit();
 }
 
@@ -15,7 +16,6 @@ if ($user_id <= 0) {
 }
 
 try {
-    // Fetch user's name
     $name_stmt = $conn->prepare("SELECT name FROM users WHERE id = ?");
     $name_stmt->execute([$user_id]);
     $user_name = $name_stmt->fetchColumn();
@@ -24,11 +24,10 @@ try {
         exit();
     }
 
-    // Fetch all key progress (started or completed)
     $keys_stmt = $conn->prepare("
         SELECT 
             key_id,
-            questions_answered,
+            correct_answers,
             total_questions,
             completed
         FROM key_progress 
@@ -38,53 +37,47 @@ try {
     $keys_stmt->execute([$user_id]);
     $key_assessments = $keys_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch completed keys for scores
     $completed_keys_stmt = $conn->prepare("SELECT key_id, score FROM user_keys WHERE user_id = ?");
     $completed_keys_stmt->execute([$user_id]);
     $completed_keys = $completed_keys_stmt->fetchAll(PDO::FETCH_ASSOC);
     $completed_keys_map = array_column($completed_keys, 'score', 'key_id');
 
-    // Fetch daily challenges
     $daily_stmt = $conn->prepare("
         SELECT 
             challenge_date,
-            5 as questions_answered,
+            correct_answers,
             5 as total_questions,
-            2 as score
+            completed,
+            CASE WHEN completed THEN 2 ELSE 0 END as score
         FROM daily_challenges 
-        WHERE user_id = ? AND completed = TRUE
+        WHERE user_id = ?
         ORDER BY challenge_date ASC
     ");
     $daily_stmt->execute([$user_id]);
     $daily_assessments = $daily_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Combine assessments
     $assessments = [];
-    
-    // Add all keys from key_progress
     foreach ($key_assessments as $key) {
         $score = $key['completed'] ? ($completed_keys_map[$key['key_id']] ?? 0) : 0;
         $assessments[] = [
             'assessment_name' => "Key #{$key['key_id']}" . ($key['completed'] ? " (Completed)" : ""),
-            'questions_answered' => $key['questions_answered'],
+            'questions_answered' => $key['correct_answers'],
             'total_questions' => $key['total_questions'],
             'score' => $score,
             'user_name' => $user_name
         ];
     }
 
-    // Add daily challenges
     foreach ($daily_assessments as $daily) {
         $assessments[] = [
-            'assessment_name' => "Daily Challenge ({$daily['challenge_date']})",
-            'questions_answered' => $daily['questions_answered'],
+            'assessment_name' => "Daily Challenge ({$daily['challenge_date']})" . ($daily['completed'] ? " (Completed)" : ""),
+            'questions_answered' => $daily['correct_answers'],
             'total_questions' => $daily['total_questions'],
             'score' => $daily['score'],
             'user_name' => $user_name
         ];
     }
 
-    // If no assessments, show a placeholder
     if (empty($assessments)) {
         $assessments[] = [
             'assessment_name' => 'No assessments started yet',
@@ -94,6 +87,9 @@ try {
             'user_name' => $user_name
         ];
     }
+
+    // Debug: Log raw data
+    error_log("User ID: $user_id, Keys: " . print_r($key_assessments, true) . ", Daily: " . print_r($daily_assessments, true));
 
     header('Content-Type: application/json');
     echo json_encode($assessments);

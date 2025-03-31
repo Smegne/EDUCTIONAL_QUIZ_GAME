@@ -11,6 +11,10 @@ body {
     font-size: 0.9rem;
 }
 
+.card{
+    box-shadow: 0 2px 4px rgba(10, 10, 10, 0.1)
+}
+
 .table {
     width: 100%;
     margin-bottom: 20px;
@@ -59,7 +63,7 @@ progress {
 }
 
 .container a {
-    color: #007bff; /* Changed to blue for visibility on light background */
+    color: white;
 }
 
 .navbar {
@@ -69,7 +73,7 @@ progress {
 
 /* Bottom Navigation */
 .bottom-nav {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -80,6 +84,43 @@ progress {
     z-index: 1000;
 }
 
+.quiz-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timer {
+    font-size: 1rem;
+    color: #dc3545;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+.form-label {
+    font-weight: bold;
+}
+
+.form-control, .form-select {
+    margin-bottom: 10px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
 .bottom-nav .nav-item {
     flex: 1;
     text-align: center;
@@ -99,61 +140,80 @@ progress {
     font-size: 1.5rem;
 }
 
-/* Locked Keys */
-.key-container {
+/* Button Group for Horizontal Buttons */
+.button-group {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.button-group .btn {
+    flex: 1;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.button-group .btn:hover {
+    background-color: #218838;
+}
+
+/* Keys Container and Cards */
+.key-container {
     margin-top: 20px;
 }
 
 .key-card {
-    width: 100px;
+    width: 100%; /* Full width within col */
     height: 100px;
-    background-color: rgba(200, 200, 200, 0.8); /* Inactive: Light gray with transparency */
-    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background-color: rgba(200, 200, 200, 0.8); /* Inactive */
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
     position: relative;
+    overflow: hidden;
 }
 
 .key-card.active {
-    background-color: rgba(40, 167, 69, 0.8); /* Active: Green (matches navbar) with transparency */
+    background-color: rgba(40, 167, 69, 0.8); /* Active */
     cursor: pointer;
 }
 
 .key-card.inactive {
-    background-color: rgba(150, 150, 150, 0.6); /* Inactive: Darker gray with more transparency */
+    background-color: rgba(150, 150, 150, 0.6); /* Inactive */
     cursor: not-allowed;
 }
 
 .key-card.opened {
-    background-color: rgba(255, 215, 0, 0.8); /* Opened: Gold with transparency */
+    background-color: rgba(255, 215, 0, 0.8); /* Opened */
     cursor: default;
 }
 
 .key-card:hover:not(.inactive):not(.opened) {
-    background-color: rgba(100, 100, 100, 0.8); /* Hover: Darker gray for active keys */
+    background-color: rgba(100, 100, 100, 0.8); /* Hover */
 }
 
 .key-card i {
     font-size: 2rem;
-    color: rgba(0, 0, 0, 0.7); /* Black icon with slight transparency */
+    color: rgba(0, 0, 0, 0.7);
 }
 
-.key-card span {
+.key-card p {
     font-size: 1rem;
     color: rgba(0, 0, 0, 0.7);
-    margin-top: 5px;
+    margin: 5px 0 0;
 }
 
-/* Media Query for Mobile/Tablet (2560x1600 or smaller) */
-@media (max-width: 2560px) and (max-height: 1600px) {
+/* Media Query for Mobile/Tablet (below md, <768px) */
+@media (max-width: 767.98px) {
     .quiz-card {
         max-width: 100%;
         margin: 10px;
@@ -169,12 +229,12 @@ progress {
     }
 
     .bottom-nav {
-        display: flex; /* Show bottom nav on mobile/tablet */
+        display: flex;
         justify-content: space-around;
     }
 
     .navbar {
-        display: flex; /* Keep top navbar visible */
+        display: flex;
     }
 
     .navbar-nav {
@@ -185,27 +245,42 @@ progress {
         padding: 5px 10px;
     }
 
+    .card.shadow {
+        padding: 15px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+
     .key-card {
-        width: 80px;
         height: 80px;
     }
 
     .key-card i {
         font-size: 1.5rem;
+        line-height: 1;
     }
 
-    .key-card span {
+    .key-card p {
         font-size: 0.9rem;
+        margin-top: 2px;
+        line-height: 1;
     }
 }
 
-/* Desktop (> 2560x1600) */
-@media (min-width: 2561px) {
+/* Desktop (md and up, ≥768px) */
+@media (min-width: 768px) {
     .navbar {
-        display: flex; /* Top navbar always visible */
+        display: flex;
     }
 
     .bottom-nav {
-        display: none; /* Hide bottom nav on desktop */
+        display: none;
     }
 }
