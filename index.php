@@ -20,18 +20,24 @@ if (isset($_POST['login'])) {
 }
 ?>
 
-<h2>Login</h2>
-<form method="POST">
-    <div class="mb-3">
-        <label>Name</label>
-        <input type="text" name="name" class="form-control" required>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2>Login</h2>
+            <form method="POST">
+                <div class="mb-3">
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" name="login" class="btn btn-primary">Login</button>
+                <p>Not registered? <a href="register.php">Register here</a></p>
+            </form>
+        </div>
     </div>
-    <div class="mb-3">
-        <label>Password</label>
-        <input type="password" name="password" class="form-control" required>
-    </div>
-    <button type="submit" name="login" class="btn btn-primary">Login</button>
-    <p>Not registered? <a href="register.php">Register here</a></p>
-</form>
+</div>
 
 <?php include 'includes/footer.php'; ?>
